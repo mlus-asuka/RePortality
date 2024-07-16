@@ -1,0 +1,7 @@
+{
+  "parent": "portality:block/util_cube_glow_3_all_inverted",
+  "textures": {
+    "all": "portality:block/base/base_all",
+    "glow_below": "portality:block/frame/frame_overlay"
+  }
+}

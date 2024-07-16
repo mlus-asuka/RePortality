@@ -1,0 +1,6 @@
+{
+  "parent": "portality:block/module",
+  "textures": {
+    "glow": "portality:block/modules/interdimensional_eye"
+  }
+}

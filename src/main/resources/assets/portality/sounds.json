@@ -1,0 +1,17 @@
+{
+  "portal": {
+    "category": "block",
+    "sounds": [
+      "portality:portal"
+    ],
+    "subtitle": "portality.subtitle.portal",
+    "stream": true
+  },
+  "portal_teleport": {
+    "category": "block",
+    "sounds": [
+      "portality:portal_teleport"
+    ],
+    "subtitle": "portality.subtitle.portal_teleport"
+  }
+}

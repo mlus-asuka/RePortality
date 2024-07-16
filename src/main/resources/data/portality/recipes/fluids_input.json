@@ -1,0 +1,19 @@
+{
+  "result": {
+    "item": "portality:module_fluids"
+  },
+  "pattern": [
+    "f f",
+    " q ",
+    "f f"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "f": {
+      "item": "portality:frame"
+    },
+    "q": {
+      "item": "minecraft:bucket"
+    }
+  }
+}

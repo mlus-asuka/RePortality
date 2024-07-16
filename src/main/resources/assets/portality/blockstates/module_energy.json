@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "input=true": {
+      "model": "portality:block/module_energy_input"
+    },
+    "input=false": {
+      "model": "portality:block/module_energy_output"
+    }
+  }
+}

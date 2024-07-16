@@ -1,0 +1,25 @@
+{
+  "variants": {
+    "subfacing=north": {
+      "model": "portality:block/generator"
+    },
+    "subfacing=south": {
+      "model": "portality:block/generator",
+      "y": 180
+    },
+    "subfacing=west": {
+      "model": "portality:block/generator",
+      "y": 270
+    },
+    "subfacing=east": {
+      "model": "portality:block/generator",
+      "y": 90
+    },
+    "subfacing=up": {
+      "model": "portality:block/generator"
+    },
+    "subfacing=down": {
+      "model": "portality:block/generator"
+    }
+  }
+}
