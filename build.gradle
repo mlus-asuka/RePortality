@@ -21,16 +21,16 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = "1.20.1-4.0.0"
+version = "1.20.1-1.0.0"
 group = "cn.mlus"
-archivesBaseName = "portality"
+archivesBaseName = "RePortality"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 minecraft {
     mappings channel: 'parchment', version: '2023.06.26-1.20.1'
     runs {
-        client = {
+        client {
             // recommended logging data for a userdev environment
             properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
             // recommended logging level for the console
@@ -42,7 +42,7 @@ minecraft {
                 }
             }
         }
-        server = {
+        server  {
             // recommended logging data for a userdev environment
             properties 'forge.logging.markers': 'SCAN,REGISTRIES,REGISTRYDUMP'
             // recommended logging level for the console
@@ -86,7 +86,6 @@ jar {
 
 repositories {
     mavenCentral()
-    jcenter()
     maven {
         name 'jared maven'
         url "https://maven.blamejared.com/"
@@ -113,8 +112,10 @@ dependencies {
 }
 
 afterEvaluate {
-    tasks.withType(JavaCompile) {
-        options.compilerArgs << "-Xmaxerrs" << "2000"
+    tasks.withType(JavaCompile).tap {
+        configureEach {
+            options.compilerArgs << "-Xmaxerrs" << "2000"
+        }
     }
 }
 
