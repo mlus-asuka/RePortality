@@ -21,7 +21,7 @@ plugins {
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-version = "1.20.1-1.0.0"
+version = "1.20.1-1.0.1"
 group = "cn.mlus"
 archivesBaseName = "RePortality"
 
@@ -103,11 +103,7 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.1.0'
-    if (findProject(':titanium') != null) {
-        implementation project(':titanium')
-    } else {
-        implementation fg.deobf("curse.maven:titanium-287342:5468426")
-    }
+    implementation fg.deobf("curse.maven:titanium-287342:5468426")
     //runtimeOnly fg.deobf("team.chisel.ctm:CTM:1.18-+")
 }
 

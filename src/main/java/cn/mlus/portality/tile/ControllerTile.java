@@ -23,21 +23,21 @@
  */
 package cn.mlus.portality.tile;
 
+import cn.mlus.portality.block.ControllerBlock;
+import cn.mlus.portality.block.module.IPortalModule;
 import cn.mlus.portality.data.PortalDataManager;
 import cn.mlus.portality.data.PortalInformation;
 import cn.mlus.portality.data.PortalLinkData;
-import cn.mlus.portality.handler.ChunkLoaderHandler;
-import cn.mlus.portality.handler.StructureHandler;
-import cn.mlus.portality.handler.TeleportHandler;
-import cn.mlus.portality.network.PortalNetworkMessage;
-import cn.mlus.portality.block.ControllerBlock;
-import cn.mlus.portality.block.module.IPortalModule;
 import cn.mlus.portality.gui.ChangeColorScreen;
 import cn.mlus.portality.gui.ControllerScreen;
 import cn.mlus.portality.gui.PortalsScreen;
 import cn.mlus.portality.gui.RenameControllerScreen;
 import cn.mlus.portality.gui.button.PortalSettingButton;
 import cn.mlus.portality.gui.button.TextPortalButton;
+import cn.mlus.portality.handler.ChunkLoaderHandler;
+import cn.mlus.portality.handler.StructureHandler;
+import cn.mlus.portality.handler.TeleportHandler;
+import cn.mlus.portality.network.PortalNetworkMessage;
 import cn.mlus.portality.proxy.CommonProxy;
 import cn.mlus.portality.proxy.PortalityConfig;
 import cn.mlus.portality.proxy.PortalitySoundHandler;
@@ -49,10 +49,11 @@ import com.hrznstudio.titanium.block.tile.PoweredTile;
 import com.hrznstudio.titanium.client.screen.addon.StateButtonInfo;
 import com.hrznstudio.titanium.component.energy.EnergyStorageComponent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -127,7 +128,8 @@ public class ControllerTile extends PoweredTile<ControllerTile> implements IPort
                 return 0;
             }
         }.setId(5));
-        this.addButton(new TextPortalButton(5, 90, 80, 16, I18n.get("portality.display.call_portal"))
+        this.addButton(new TextPortalButton(5, 90, 80, 16, MutableComponent.create(new TranslatableContents("portality.display.call_portal","Call Portal",TranslatableContents.NO_ARGS)).getString()
+                )
                 .setClientConsumer(() -> screen -> {
                     OpenGui.open(2, ControllerTile.this);
                 })
@@ -155,7 +157,7 @@ public class ControllerTile extends PoweredTile<ControllerTile> implements IPort
             if (information.getOwner().equals(playerEntity.getUUID()))
                 setDisplayNameEnabled(!isDisplayNameEnabled());
         }).setId(3));
-        this.addButton(new TextPortalButton(90, 90, 80, 16, I18n.get("portality.display.close_portal")).setPredicate((playerEntity, compoundNBT) -> closeLink()).setId(5));
+        this.addButton(new TextPortalButton(90, 90, 80, 16,MutableComponent.create(new TranslatableContents("portality.display.close_portal","Close Portal",TranslatableContents.NO_ARGS)).getString()).setPredicate((playerEntity, compoundNBT) -> closeLink()).setId(5));
     }
 
     @Override
@@ -393,7 +395,7 @@ public class ControllerTile extends PoweredTile<ControllerTile> implements IPort
     public void closeLink() {
         if (linkData != null) {
             PortalDataManager.setActiveStatus(this.level, this.worldPosition, false);
-            if (!linkData.isToken()){
+            if (!linkData.isToken() && this.level.getServer() != null){
                 Level world = this.level.getServer().getLevel(linkData.getDimension());
                 if (world != null){
                     BlockEntity entity = world.getBlockEntity(linkData.getPos());

@@ -34,6 +34,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.LiteralContents;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -49,6 +50,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -93,25 +95,22 @@ public class ControllerBlock extends RotatableBlock<ControllerTile> {
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player playerIn, InteractionHand hand, BlockHitResult ray) {
+    public InteractionResult use(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull Player playerIn, @NotNull InteractionHand hand, @NotNull BlockHitResult ray) {
         BlockEntity tile = worldIn.getBlockEntity(pos);
-        if (tile instanceof ControllerTile) {
-            ControllerTile controller = (ControllerTile) tile;
+        if (tile instanceof ControllerTile controller) {
             if (!worldIn.isClientSide()) {
                 if (!controller.isFormed()) {
-                    playerIn.displayClientMessage(MutableComponent.create(new LiteralContents("portality.controller.error.size")).withStyle(ChatFormatting.RED), true);
+                    playerIn.displayClientMessage(MutableComponent.create(new TranslatableContents("portality.controller.error.size","ERROR: Portal Structure Invalid!",TranslatableContents.NO_ARGS)).withStyle(ChatFormatting.RED), true);
                     return InteractionResult.SUCCESS;
                 }
                 if (controller.isPrivate() && !controller.getOwner().equals(playerIn.getUUID())) {
-                    playerIn.displayClientMessage(MutableComponent.create(new LiteralContents("portality.controller.error.privacy")).withStyle(ChatFormatting.RED), true);
+                    playerIn.displayClientMessage(MutableComponent.create(new TranslatableContents("portality.controller.error.privacy","ERROR: This portal is private!",TranslatableContents.NO_ARGS)).withStyle(ChatFormatting.RED), true);
                     return InteractionResult.SUCCESS;
                 }
             } else if (controller.isFormed()) {
                 if (controller.isPrivate() && !controller.getOwner().equals(playerIn.getUUID()))
                     return InteractionResult.SUCCESS;
-                Minecraft.getInstance().submitAsync(() -> {
-                    ControllerTile.OpenGui.open(0, (ControllerTile) tile);
-                });
+                Minecraft.getInstance().submitAsync(() -> ControllerTile.OpenGui.open(0, (ControllerTile) tile));
                 return InteractionResult.SUCCESS;
             }
         }
@@ -119,7 +118,7 @@ public class ControllerBlock extends RotatableBlock<ControllerTile> {
     }
 
     @Override
-    public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
+    public void onRemove(@NotNull BlockState state, Level worldIn, @NotNull BlockPos pos, @NotNull BlockState newState, boolean isMoving) {
         BlockEntity entity = worldIn.getBlockEntity(pos);
         if (entity instanceof ControllerTile) {
             ((ControllerTile) entity).breakController();
